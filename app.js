@@ -4,6 +4,9 @@ let markers = [];
 let pois = [];
 let tempMarker = null;
 let selectedLocation = null;
+let userLocationMarker = null;
+let accuracyCircle = null;
+let geolocateInProgress = false;
 
 // Category icons configuration
 const categoryIcons = {
@@ -142,6 +145,157 @@ function setupEventListeners() {
 
     // Toggle sidebar
     document.getElementById('toggleSidebar').addEventListener('click', toggleSidebar);
+
+    // Geolocation control
+    setupGeolocationControl();
+}
+
+// Geolocation control setup
+function setupGeolocationControl() {
+    const geoBtn = document.getElementById('geolocateBtn');
+    geoBtn.addEventListener('click', requestUserLocation);
+}
+
+// Request user geolocation
+function requestUserLocation() {
+    if (geolocateInProgress) return;
+
+    if (!navigator.geolocation) {
+        showGeoStatus('Geolocalización no soportada', 'error');
+        return;
+    }
+
+    geolocateInProgress = true;
+    updateGeoButton('loading');
+    showGeoStatus('Obteniendo ubicación...', 'loading');
+
+    navigator.geolocation.getCurrentPosition(
+        onGeolocationSuccess,
+        onGeolocationError,
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+}
+
+// Handle successful geolocation
+function onGeolocationSuccess(position) {
+    const { latitude, longitude, accuracy } = position.coords;
+
+    // Remove old markers if exists
+    if (userLocationMarker) {
+        map.removeLayer(userLocationMarker);
+    }
+    if (accuracyCircle) {
+        map.removeLayer(accuracyCircle);
+    }
+
+    // Temporarily remove bounds to center on user location
+    map.setMaxBounds(null);
+
+    // Center map on user location
+    map.setView([latitude, longitude], 15);
+
+    // Add accuracy circle
+    accuracyCircle = L.circle([latitude, longitude], {
+        radius: accuracy,
+        color: '#3498db',
+        weight: 2,
+        opacity: 0.3,
+        fill: true,
+        fillColor: '#3498db',
+        fillOpacity: 0.1
+    }).addTo(map);
+
+    // Add user location marker
+    const userIcon = L.divIcon({
+        html: '<div class="user-location-marker"></div>',
+        className: 'user-location-icon',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+        popupAnchor: [0, -10]
+    });
+
+    userLocationMarker = L.marker([latitude, longitude], {
+        icon: userIcon,
+        zIndexOffset: 1000
+    }).addTo(map);
+
+    // Create popup with location info
+    const popupContent = `
+        <div style="min-width: 180px;">
+            <h3 style="margin: 0 0 10px 0; color: #3498db;">Tu Ubicación</h3>
+            <p style="margin: 5px 0;"><strong>Latitud:</strong> ${latitude.toFixed(6)}</p>
+            <p style="margin: 5px 0;"><strong>Longitud:</strong> ${longitude.toFixed(6)}</p>
+            <p style="margin: 5px 0; font-size: 0.85rem; color: #999;">
+                Precisión: ${Math.round(accuracy)}m
+            </p>
+        </div>
+    `;
+
+    userLocationMarker.bindPopup(popupContent);
+    userLocationMarker.openPopup();
+
+    // Restore bounds after 1 second
+    setTimeout(() => {
+        const soriaBounds = [
+            [40.9, -3.5],
+            [42.2, -1.7]
+        ];
+        map.setMaxBounds(soriaBounds);
+    }, 1000);
+
+    geolocateInProgress = false;
+    updateGeoButton('success');
+    showGeoStatus('Ubicación obtenida', 'success', 3000);
+}
+
+// Handle geolocation error
+function onGeolocationError(error) {
+    geolocateInProgress = false;
+    let errorMessage = 'Error al obtener la ubicación';
+
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            errorMessage = 'Permiso de ubicación denegado';
+            break;
+        case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Información de ubicación no disponible';
+            break;
+        case error.TIMEOUT:
+            errorMessage = 'Tiempo de espera agotado';
+            break;
+    }
+
+    updateGeoButton('error');
+    showGeoStatus(errorMessage, 'error', 5000);
+}
+
+// Update geolocation button state
+function updateGeoButton(state) {
+    const btn = document.getElementById('geolocateBtn');
+    btn.classList.remove('loading', 'error');
+
+    if (state === 'loading') {
+        btn.classList.add('loading');
+    } else if (state === 'error') {
+        btn.classList.add('error');
+    }
+}
+
+// Show geolocation status message
+function showGeoStatus(message, type = 'info', duration = 0) {
+    const statusEl = document.getElementById('geoStatus');
+    statusEl.textContent = message;
+    statusEl.className = 'geo-status show ' + type;
+
+    if (duration > 0) {
+        setTimeout(() => {
+            statusEl.classList.remove('show');
+        }, duration);
+    }
 }
 
 // Handle form submit

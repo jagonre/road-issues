@@ -424,3 +424,113 @@ section h2 {
 .poi-list::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+/* Geolocation Control */
+.geolocation-control {
+    position: absolute;
+    bottom: 30px;
+    right: 15px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.geolocation-btn {
+    background-color: #fff;
+    border: 2px solid #667eea;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+    color: #667eea;
+    padding: 0;
+}
+
+.geolocation-btn:hover {
+    background-color: #667eea;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.geolocation-btn:active {
+    transform: scale(0.95);
+}
+
+.geolocation-btn.loading {
+    animation: spin 1s linear infinite;
+}
+
+.geolocation-btn.error {
+    border-color: #ff4757;
+    color: #ff4757;
+}
+
+.geo-label {
+    display: none;
+}
+
+.geo-status {
+    font-size: 0.8rem;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 8px 12px;
+    border-radius: 4px;
+    max-width: 200px;
+    text-align: right;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.geo-status.show {
+    display: block;
+}
+
+.geo-status.error {
+    background-color: #ffe5e5;
+    color: #ff4757;
+}
+
+.geo-status.success {
+    background-color: #e5ffe5;
+    color: #27ae60;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* User Location Marker */
+.user-location-marker {
+    width: 20px;
+    height: 20px;
+    background-color: #3498db;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.4);
+}
+
+/* Responsive: Show label on desktop */
+@media (min-width: 768px) {
+    .geolocation-btn {
+        width: auto;
+        border-radius: 25px;
+        padding: 8px 16px;
+        gap: 8px;
+        flex-direction: row;
+    }
+
+    .geo-label {
+        display: inline;
+        font-size: 0.9rem;
+    }
+}
