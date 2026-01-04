@@ -2,11 +2,16 @@
 
 Aplicación web interactiva para visualizar el mapa de carreteras de la provincia de Soria (España) y gestionar puntos de interés personalizados.
 
+## 🌐 Demo en Vivo
+
+**[https://jagonre.github.io/road-issues/](https://jagonre.github.io/road-issues/)**
+
 ## Características
 
 - **Mapa interactivo** de la provincia de Soria con datos de OpenStreetMap
+- **Geolocalización del dispositivo** para ver tu ubicación actual en el mapa
 - **Añadir puntos de interés** haciendo click en el mapa
-- **Categorías predefinidas**: Bache, Obra, Accidente, Otro
+- **Categorías predefinidas**: Señal de tráfico, Bache, Obra, Accidente, Otro
 - **Almacenamiento local** de todos los puntos de interés
 - **Búsqueda y filtrado** de puntos por nombre, descripción o categoría
 - **Exportar/Importar** datos en formato JSON
@@ -79,6 +84,16 @@ python -m http.server 8000
    - **Combinar** con los datos existentes
    - **Reemplazar** los datos actuales
 
+#### 8. Ver tu ubicación actual
+
+1. Haz click en el botón **Mi Ubicación** 📍 (esquina inferior derecha del mapa)
+2. Acepta los permisos de ubicación si el navegador los solicita
+3. El mapa se centrará en tu ubicación actual
+4. Verás un marcador azul con un círculo de precisión
+5. Haz click en el marcador para ver tus coordenadas exactas
+
+**Nota:** La geolocalización requiere HTTPS o localhost y permisos del navegador.
+
 ### Categorías de puntos de interés
 
 Cada categoría tiene un icono y color distintivo:
@@ -118,13 +133,15 @@ road-issues/
 
 - **Zoom**: Usa la rueda del ratón o los botones +/- en el mapa
 - **Desplazamiento**: Arrastra el mapa con el ratón o el dedo (en móvil)
-- **Panel lateral**: Haz click en el botón ☰ para mostrar/ocultar el panel
+- **Panel lateral**: Haz click en el botón ☰ para mostrar/ocultar el panel (también disponible como botón flotante en el mapa cuando el panel está colapsado)
+- **Mi ubicación**: Haz click en el botón 📍 para ver tu ubicación actual en el mapa
 
 ## Notas importantes
 
 1. **Almacenamiento local**: Los datos se guardan en el navegador. Si limpias el caché o usas modo incógnito, los datos se perderán.
 2. **Copia de seguridad**: Usa la función de exportar para crear copias de seguridad de tus datos.
 3. **Límites del mapa**: El mapa está configurado para enfocarse en la provincia de Soria, pero puedes navegar por áreas cercanas.
+4. **Geolocalización**: Requiere conexión HTTPS (o localhost) y permisos del navegador. Funciona mejor en dispositivos con GPS.
 
 ## Soporte de navegadores
 
