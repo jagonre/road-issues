@@ -146,6 +146,9 @@ function setupEventListeners() {
     // Toggle sidebar
     document.getElementById('toggleSidebar').addEventListener('click', toggleSidebar);
 
+    // Toggle sidebar from floating button
+    document.getElementById('toggleSidebarFloating').addEventListener('click', toggleSidebar);
+
     // Geolocation control
     setupGeolocationControl();
 }
@@ -608,5 +611,14 @@ function importPOIs(e) {
 // Toggle sidebar
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const floatingBtn = document.getElementById('toggleSidebarFloating');
+
     sidebar.classList.toggle('collapsed');
+
+    // Show floating button when sidebar is collapsed, hide it when expanded
+    if (sidebar.classList.contains('collapsed')) {
+        floatingBtn.classList.remove('hidden');
+    } else {
+        floatingBtn.classList.add('hidden');
+    }
 }

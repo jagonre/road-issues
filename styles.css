@@ -425,10 +425,47 @@ section h2 {
     background: #555;
 }
 
+/* Sidebar Toggle Floating Button */
+.sidebar-toggle-floating {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    z-index: 998;
+    background-color: #fff;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+    color: #667eea;
+    padding: 0;
+}
+
+.sidebar-toggle-floating:hover {
+    background-color: #667eea;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.sidebar-toggle-floating:active {
+    transform: scale(0.95);
+}
+
+.sidebar-toggle-floating.hidden {
+    display: none;
+}
+
 /* Geolocation Control */
 .geolocation-control {
     position: absolute;
-    bottom: 30px;
+    bottom: 120px;
     right: 15px;
     z-index: 999;
     display: flex;
